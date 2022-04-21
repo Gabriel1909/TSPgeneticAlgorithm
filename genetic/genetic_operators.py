@@ -13,6 +13,19 @@ def select(r, population, fn_fitness):
     return [sampler() for _ in range(r)]
 
 
+def select_best(r, population, fn_fitness):
+    fitnesses = map(fn_fitness, population)
+
+    selection = list()
+    fitnesses_list = list(fitnesses)
+    for i in range(r):
+        index = fitnesses_list.index(max(fitnesses_list))
+        fitnesses_list.remove(max(fitnesses_list))
+        selection.append(population[index])
+
+    return selection
+
+
 # return a single sample from seq; the probability of a sample being returned
 # is proportional to its weight
 def weighted_sampler(seq, weights):
@@ -50,6 +63,18 @@ def recombine(x, y):
                     break
                 else:
                     index_y -= 1
+
+    return resultado
+
+
+def recombine_one_point(x, y):
+    resultado = list()
+
+    n = len(x)
+    index = random.randrange(0, n)
+
+    resultado.extend(x[:index])
+    resultado.extend(y[index:])
 
     return resultado
 

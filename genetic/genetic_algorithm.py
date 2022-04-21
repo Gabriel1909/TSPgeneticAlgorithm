@@ -1,4 +1,4 @@
-from genetic.genetic_operators import select, recombine, mutate, mutate_multiple, mutate_inversion
+from genetic.genetic_operators import select, select_best, recombine, recombine_one_point, mutate, mutate_multiple, mutate_inversion
 from problem.utils import plot_graph
 
 
@@ -31,7 +31,7 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
         # move to the new population
         population = new_population
 
-        print(geration)
+        # print(geration)
         # check if one of the individuals achieved a fitness of fn_thres; if so, return it
         fittest_individual = fitness_threshold(fn_fitness, fn_thres, population, results)
 
