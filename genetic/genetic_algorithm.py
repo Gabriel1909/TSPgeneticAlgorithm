@@ -1,7 +1,15 @@
 from genetic.genetic_operators import select, recombine, mutate
+from matplotlib import pyplot as plt
 
+def plot_graph(results):
+    plt.plot(results)
+    plt.show()
+    input()
 
 def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1):
+
+    results = []
+
     # for each generation
     for geration in range(ngen):
 
@@ -27,9 +35,13 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
 
         print(geration)
         # check if one of the individuals achieved a fitness of fn_thres; if so, return it
-        fittest_individual = fitness_threshold(fn_fitness, fn_thres, population)
+        fittest_individual = fitness_threshold(fn_fitness, fn_thres, population, results)
+
         if fittest_individual:
             return fittest_individual
+
+    # plot results
+    plot_graph(results)
 
     # return the individual with highest fitness
     return max(population, key=fn_fitness)
@@ -37,12 +49,16 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
 
 # get the best individual of the received population and return it if its
 # fitness is higher than the specified threshold fn_thres
-def fitness_threshold(fn_fitness, fn_thres, population):
+def fitness_threshold(fn_fitness, fn_thres, population, results):
     if not fn_thres:
         return None
 
     fittest_individual = max(population, key=fn_fitness)
-    if fn_fitness(fittest_individual) >= fn_thres:
+    result = fn_fitness(fittest_individual)
+
+    results.append(result)
+
+    if result >= fn_thres:
         return fittest_individual
 
     return None
