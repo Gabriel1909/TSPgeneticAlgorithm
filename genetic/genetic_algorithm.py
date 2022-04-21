@@ -3,13 +3,13 @@ from genetic.genetic_operators import select, recombine, mutate
 
 def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1):
     # for each generation
-    for i in range(ngen):
+    for geration in range(ngen):
 
         # create a new population
         new_population = []
 
         # repeat to create len(population) individuals
-        while len(new_population) <= len(population):
+        while len(new_population) < len(population):
             # select the parents
             p1, p2 = select(2, population, fn_fitness)
 
@@ -25,6 +25,7 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
         # move to the new population
         population = new_population
 
+        print(geration)
         # check if one of the individuals achieved a fitness of fn_thres; if so, return it
         fittest_individual = fitness_threshold(fn_fitness, fn_thres, population)
         if fittest_individual:

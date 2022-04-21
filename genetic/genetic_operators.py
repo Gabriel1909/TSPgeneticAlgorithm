@@ -23,22 +23,33 @@ def weighted_sampler(seq, weights):
 def recombine(x, y):
     n = len(x)
 
-    corte_aleatorio = random.randrange(0, n)
+    minimo = 30
+    maximo = 40
 
-    primeiro_intervalo = x[:corte_aleatorio]
+    primeiro_corte = random.randrange(0, n-maximo)
 
-    valores_validos = x[corte_aleatorio:]
+    segundo_corte = primeiro_corte + random.randrange(minimo, maximo)
 
-    segundo_intervalo = y[corte_aleatorio:]
+    resultado = [-1 for _ in range(0, n)]
 
-    for index in range(0, len(segundo_intervalo)):
+    resultado[primeiro_corte:segundo_corte] = x[primeiro_corte:segundo_corte]
 
-        while segundo_intervalo[index] not in valores_validos:
-            segundo_intervalo[index] = random.choice(valores_validos)
+    valores_validos = x[0:primeiro_corte] + x[segundo_corte:n]
 
-        valores_validos.remove(segundo_intervalo[index])
+    index_y = n-1
 
-    return primeiro_intervalo + segundo_intervalo
+    for index in range(n-1, -1, -1):
+        if resultado[index] == -1:
+
+            while True:
+                if y[index_y] in valores_validos:
+                    resultado[index] = y[index_y]
+                    index_y -= 1
+                    break
+                else:
+                    index_y -= 1
+
+    return resultado
 
 
 def mutate(x, pmut):
