@@ -1,4 +1,4 @@
-from genetic.genetic_operators import select, select_best, recombine, recombine_one_point, mutate, mutate_multiple, mutate_inversion
+from genetic.genetic_operators import select, select_best, recombine_ox, recombine_one_point, mutate, mutate_multiple, mutate_inversion
 from problem.utils import plot_graph
 
 

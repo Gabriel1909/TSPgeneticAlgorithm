@@ -35,7 +35,7 @@ def weighted_sampler(seq, weights):
     return lambda: seq[bisect.bisect(totals, random.uniform(0, totals[-1]))]
 
 
-def recombine(x, y):
+def recombine_ox(x, y):
     n = len(x)
 
     minimo = 30
