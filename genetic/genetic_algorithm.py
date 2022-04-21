@@ -1,7 +1,7 @@
 from genetic.genetic_operators import select, recombine, mutate
 
 
-def genetic_algorithm(population, fn_fitness, gene_pool, fn_thres=None, ngen=1000, pmut=0.1):
+def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1):
     # for each generation
     for i in range(ngen):
 
@@ -9,7 +9,7 @@ def genetic_algorithm(population, fn_fitness, gene_pool, fn_thres=None, ngen=100
         new_population = []
 
         # repeat to create len(population) individuals
-        for j in range(len(population)):
+        while len(new_population) <= len(population):
             # select the parents
             p1, p2 = select(2, population, fn_fitness)
 
@@ -17,10 +17,10 @@ def genetic_algorithm(population, fn_fitness, gene_pool, fn_thres=None, ngen=100
             child = recombine(p1, p2)
 
             # mutate the child
-            child = mutate(child, gene_pool, pmut)
+            child = mutate(child, pmut)
 
-            # add the child to the new population
-            new_population.append(child)
+            if fn_fitness(child) >= (fn_fitness(p1) + fn_fitness(p2))/2:
+                new_population.append(child)
 
         # move to the new population
         population = new_population

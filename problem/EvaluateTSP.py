@@ -1,3 +1,6 @@
+from problem.utils import distancia_euclidiana
+
+
 class EvaluateTSP:
 
     def __init__(self, problem_instance):
@@ -15,8 +18,24 @@ class EvaluateTSP:
 
             distancia += distancia_euclidiana(x1, y1, x2, y2)
 
-        return 100000 - distancia
+        total = 100000 - distancia
 
+        if total > 100000 - 800:
+            total *= 2.6
 
-def distancia_euclidiana(x1, y1, x2, y2):
-    return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+        elif total > 100000 - 1000:
+            total *= 2.1
+
+        elif total > 100000 - 1500:
+            total *= 1.7
+
+        elif total > 100000 - 2500:
+            total *= 1.4
+
+        elif total > 100000 - 4000:
+            total *= 1.2
+
+        elif total > 100000 - 7000:
+            total *= 1.1
+
+        return total

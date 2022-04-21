@@ -20,29 +20,40 @@ def weighted_sampler(seq, weights):
     return lambda: seq[bisect.bisect(totals, random.uniform(0, totals[-1]))]
 
 
-# genetic operator for recombination (crossover) of individuals;
-# this function implements single-point crossover, where the resulting individual
-# carries a portion [0,c] from parent x and a portion [c,n] from parent y, with
-# c selected at random
 def recombine(x, y):
     n = len(x)
-    c = random.randrange(0, n)
-    return x[:c] + y[c:]
+
+    corte_aleatorio = random.randrange(0, n)
+
+    primeiro_intervalo = x[:corte_aleatorio]
+
+    valores_validos = x[corte_aleatorio:]
+
+    segundo_intervalo = y[corte_aleatorio:]
+
+    for index in range(0, len(segundo_intervalo)):
+
+        while segundo_intervalo[index] not in valores_validos:
+            segundo_intervalo[index] = random.choice(valores_validos)
+
+        valores_validos.remove(segundo_intervalo[index])
+
+    return primeiro_intervalo + segundo_intervalo
 
 
-# genetic operator for mutation;
-# this function implements uniform mutation, where a single element of the
-# individual is selected at random and its value is changed by a randomly chosen
-# value (out of the possible values in gene_pool)
-def mutate(x, gene_pool, pmut):
-    # if random >= pmut, then no mutation is performed
+def mutate(x, pmut):
+
     if random.uniform(0, 1) >= pmut:
         return x
 
     n = len(x)
-    g = len(gene_pool)
-    c = random.randrange(0, n)  # gene to be mutated
-    r = random.randrange(0, g)  # new value of the selected gene
 
-    new_gene = gene_pool[r]
-    return x[:c] + [new_gene] + x[c + 1:]
+    c = random.randrange(0, n)
+    r = random.randrange(0, n)
+
+    temp = x[c]
+
+    x[c] = x[r]
+    x[r] = temp
+
+    return x
