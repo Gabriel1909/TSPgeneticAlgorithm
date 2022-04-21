@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     file = read_file('./problem/assets/st70.tsp.txt')
     number = 6000
-    max_fitness = 1700
+    max_fitness = 675
 
     fn_fitness = EvaluateTSP(file, number)
 
@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     population = init_population(population_size, possible_values)
 
-    solution = genetic_algorithm(population, fn_fitness, fn_thres=max_fitness, ngen=50, pmut=0.3)
+    solution = genetic_algorithm(population, fn_fitness, fn_thres=max_fitness, ngen=150, pmut=0.3)
 
     print('Resulting solution: %s' % solution)
     print('Value of resulting solution: %d' % (number - fn_fitness(solution)))
