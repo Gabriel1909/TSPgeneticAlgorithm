@@ -1,13 +1,8 @@
-from genetic.genetic_operators import select, recombine, mutate
-from matplotlib import pyplot as plt
+from genetic.genetic_operators import select, recombine, mutate, mutate_multiple, mutate_inversion
+from problem.utils import plot_graph
 
-def plot_graph(results):
-    plt.plot(results)
-    plt.show()
-    input()
 
 def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1):
-
     results = []
 
     # for each generation
@@ -25,9 +20,12 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
             child = recombine(p1, p2)
 
             # mutate the child
-            child = mutate(child, pmut)
+            child = mutate_inversion(child, pmut)
 
-            if fn_fitness(child) >= (fn_fitness(p1) + fn_fitness(p2))/2:
+            if child in new_population:
+                continue
+
+            if fn_fitness(child) > (fn_fitness(p1) + fn_fitness(p2)) / 2:
                 new_population.append(child)
 
         # move to the new population
@@ -38,6 +36,7 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
         fittest_individual = fitness_threshold(fn_fitness, fn_thres, population, results)
 
         if fittest_individual:
+            plot_graph(results)
             return fittest_individual
 
     # plot results
@@ -54,11 +53,11 @@ def fitness_threshold(fn_fitness, fn_thres, population, results):
         return None
 
     fittest_individual = max(population, key=fn_fitness)
-    result = fn_fitness(fittest_individual)
+    result = fn_fitness.number - fn_fitness(fittest_individual)
 
     results.append(result)
 
-    if result >= fn_thres:
+    if result <= fn_thres:
         return fittest_individual
 
     return None

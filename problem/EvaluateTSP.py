@@ -1,21 +1,28 @@
-from problem.utils import distancia_euclidiana
+from problem.utils import euclidean_distance
 
 
 class EvaluateTSP:
 
-    def __init__(self, problem_instance):
+    def __init__(self, problem_instance, number):
         self.problem_instance = problem_instance
+        self.number = number
 
     def __call__(self, solution):
-        distancia = 0
+        distance = 0
 
-        for idCordenada in range(0, len(solution) - 2):
-            x1 = self.problem_instance[solution[idCordenada]][0]
-            y1 = self.problem_instance[solution[idCordenada]][1]
+        for cordinate_id in range(0, len(solution) - 2):
+            distance += self.calculate_distance(cordinate_id, cordinate_id + 1, solution)
 
-            x2 = self.problem_instance[solution[idCordenada + 1]][0]
-            y2 = self.problem_instance[solution[idCordenada + 1]][1]
+        distance += self.calculate_distance(0, -1, solution)
 
-            distancia += distancia_euclidiana(x1, y1, x2, y2)
+        return self.number - distance
 
-        return 6000 - distancia
+    def calculate_distance(self, coordinate_x, coordinate_y, solution):
+        x1, y1 = self.get_coordinates(coordinate_x, solution)
+
+        x2, y2 = self.get_coordinates(coordinate_y, solution)
+        return euclidean_distance(x1, y1, x2, y2)
+
+    def get_coordinates(self, coordinate, solution):
+        return self.problem_instance[solution[coordinate]][0], \
+               self.problem_instance[solution[coordinate]][1]
