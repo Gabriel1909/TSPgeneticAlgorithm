@@ -1,4 +1,10 @@
+from typing import List
+
 import pandas as pd
+
+
+def swap(a: List, i: int, j: int) -> None:
+    a[i], a[j] = a[j], a[i]
 
 
 def distancia_euclidiana(x1, y1, x2, y2):

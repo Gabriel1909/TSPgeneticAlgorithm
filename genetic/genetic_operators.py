@@ -1,6 +1,8 @@
 import random as random
 import bisect
 
+from problem.utils import swap
+
 
 # genetic operator for selection of individuals;
 # this function implements roulette wheel selection, where individuals with
@@ -58,13 +60,41 @@ def mutate(x, pmut):
         return x
 
     n = len(x)
-
     c = random.randrange(0, n)
     r = random.randrange(0, n)
+    swap(x, c, r)
 
-    temp = x[c]
+    return x
 
-    x[c] = x[r]
-    x[r] = temp
+
+def mutate_multiple(x, pmut):
+
+    if random.uniform(0, 1) >= pmut:
+        return x
+
+    n = len(x)
+    mut_factor = 0.1
+    swaps = int(n * mut_factor) if int(n * mut_factor) != 0 else 1
+
+    for i in range(swaps):
+        c = random.randrange(0, n)
+        r = random.randrange(0, n)
+        swap(x, c, r)
+
+    return x
+
+
+def mutate_inversion(x, pmut):
+
+    if random.uniform(0, 1) >= pmut:
+        return x
+
+    n = len(x)
+    i = random.randrange(0, n)
+    j = random.randrange(i, n)
+
+    temp = x[i:j]
+    temp.reverse()
+    x[i:j] = temp
 
     return x
