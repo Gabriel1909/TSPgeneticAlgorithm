@@ -67,14 +67,28 @@ def recombine_ox(x, y):
     return resultado
 
 
-def recombine_one_point(x, y):
-    resultado = list()
+def recombine_cx(x, y):
+    curr = 0  # starts at 0
 
-    n = len(x)
-    index = random.randrange(0, n)
+    cycle = {  # index: value
+        curr: x[curr],
+    }
 
-    resultado.extend(x[:index])
-    resultado.extend(y[index:])
+    curr = y[curr]
+    while curr not in list(cycle.keys()):
+        cycle[curr] = x[curr]
+        curr = y[curr]
+
+    resultado = [-1] * len(x)
+
+    for i, value in cycle.items():
+        resultado[i] = value
+
+    remaining_values = list(set(y) - set(resultado))
+
+    for i in range(len(resultado)):
+        if resultado[i] == -1:
+            resultado[i] = remaining_values.pop(0)
 
     return resultado
 

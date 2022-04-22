@@ -1,4 +1,4 @@
-from genetic.genetic_operators import select, select_best, recombine_ox, recombine_one_point, mutate, mutate_multiple, mutate_inversion
+from genetic.genetic_operators import select, select_best, recombine_ox, recombine_cx, mutate, mutate_multiple, mutate_inversion
 from problem.utils import plot_graph
 
 
@@ -17,7 +17,7 @@ def genetic_algorithm(population, fn_fitness, fn_thres=None, ngen=1000, pmut=0.1
             p1, p2 = select(2, population, fn_fitness)
 
             # recombine the parents, thus producing the child
-            child = recombine_ox(p1, p2)
+            child = recombine_cx(p1, p2)
 
             # mutate the child
             child = mutate_inversion(child, pmut)
